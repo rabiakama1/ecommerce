@@ -2,37 +2,49 @@
 //  MainTabBarController.swift
 //  EterationCase
 //
-//  Created by rabiakama on 27.07.2025.
+//  Created by rabiakama on 29.07.2025.
 //
 
 import UIKit
 
-class MainTabBarController: UIViewController {
+class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     override func viewDidLoad() {
-           super.viewDidLoad()
-           setupCustomNavBar()
-       }
-       func setupCustomNavBar() {
-           let navBar = UIView()
-           navBar.backgroundColor = .systemBlue
-           navBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 100)
-           view.addSubview(navBar)
-           
-           let titleLabel = UILabel()
-           titleLabel.text = "Custom NavBar"
-           titleLabel.textColor = .white
-           titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
-           titleLabel.sizeToFit()
-           titleLabel.center = CGPoint(x: navBar.center.x, y: navBar.frame.height / 2 + 10)
-           navBar.addSubview(titleLabel)
-       }
-
-   /* override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        setupTabBar()
-        setupViewControllers()
+        setupTabs()
+        self.selectedIndex = 1
+        self.tabBar.tintColor = .green
+        self.tabBar.unselectedItemTintColor = .purple
+        self.delegate = self
+        //setupViewControllers()
+    }
+    
+    private func setupTabs() {
+        let list = self.createNav(with: "Liste", and: UIImage(systemName: "house"), vc: ProductListCollectionViewController())
+        let detail = self.createNav(with: "Detay", and: UIImage(systemName: "house"), vc: ProductDetailViewController(product: Product()))
+        let cart = self.createNav(with: "Sepet", and: UIImage(systemName: "house"), vc: CartViewController())
+        setViewControllers([list,detail,cart], animated: true)
+    }
+    
+    private func createNav(with title: String, and image: UIImage?, vc: UIViewController) -> UIViewController {
+        vc.tabBarItem.title = title
+        vc.tabBarItem.image = image
+        return vc
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        return false
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+
+        if self.selectedIndex == 1 {
+            let alert = UIAlertController(title: "Hello", message: nil,
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .default,
+                                          handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     private func setupTabBar() {
@@ -42,15 +54,16 @@ class MainTabBarController: UIViewController {
     }
     
     private func setupViewControllers() {
-        let homeVC = ProductListCollectionViewController(nibName: "ProductListCollectionViewController", bundle: nil)
+        // XIB olmadan view controller oluşturma
+        let homeVC = ProductListCollectionViewController()
         let homeNav = UINavigationController(rootViewController: homeVC)
         homeNav.tabBarItem = UITabBarItem(title: "Anasayfa", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
         
-        let cartVC = CartViewController(nibName: "CartViewController", bundle: nil)
+        let cartVC = CartViewController()
         let cartNav = UINavigationController(rootViewController: cartVC)
         cartNav.tabBarItem = UITabBarItem(title: "Sepet", image: UIImage(systemName: "bag"), selectedImage: UIImage(systemName: "bag.fill"))
         
-        let favoritesVC = FavoritesViewController(nibName: "FavoritesViewController", bundle: nil)
+        let favoritesVC = FavoritesViewController()
         let favoritesNav = UINavigationController(rootViewController: favoritesVC)
         favoritesNav.tabBarItem = UITabBarItem(title: "Favoriler", image: UIImage(systemName: "star"), selectedImage: UIImage(systemName: "star.fill"))
         
@@ -71,5 +84,4 @@ class MainTabBarController: UIViewController {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    */
 }

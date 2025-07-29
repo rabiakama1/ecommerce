@@ -80,11 +80,15 @@ class CoreDataManager {
 
     // Sepetteki Tüm Ürünleri Getirme
     func fetchCartItems() -> [CartItem] {
+
+        var cartItems: [CartItem] = []
+        
         let fetchRequest: NSFetchRequest<CartItemEntity> = CartItemEntity.fetchRequest()
         
         do {
             let entities = try context.fetch(fetchRequest)
-            return entities.compactMap { entity in
+            
+            for entity in entities {
                 guard let productId = entity.productId,
                       let productName = entity.productName,
                       let productPrice = entity.productPrice,
@@ -93,10 +97,12 @@ class CoreDataManager {
                       let productModel = entity.productModel,
                       let productBrand = entity.productBrand,
                       let createdAt = entity.createdAt else {
-                    return nil
+                    continue
                 }
+                
                 let isoFormatter = ISO8601DateFormatter()
                 let dateString = isoFormatter.string(from: createdAt)
+                
                 let product = Product(
                     id: productId,
                     name: productName,
@@ -108,12 +114,17 @@ class CoreDataManager {
                     createdAt: dateString
                 )
                 
-                return CartItem(product: product, quantity: Int(entity.quantity))
+                let cartItem = CartItem(product: product, quantity: Int(entity.quantity))
+                cartItems.append(cartItem)
             }
+            
         } catch {
             print("Error fetching cart items: \(error)")
+            // Hata durumunda boş dizi dönderiyoruz, bu kısım aynı kalıyor.
             return []
         }
+        
+        return cartItems
     }
     
     // Sepetteki toplam ürün sayısını getirme

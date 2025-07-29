@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         let window = UIWindow(frame: UIScreen.main.bounds)
-        let rootVC = ProductListCollectionViewController()
+        let rootVC = MainTabBarController()
         window.rootViewController = rootVC
         window.makeKeyAndVisible()
         self.window = window

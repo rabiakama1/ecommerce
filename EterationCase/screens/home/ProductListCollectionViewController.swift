@@ -11,12 +11,9 @@ class ProductListCollectionViewController: UIViewController {
     
     
     // MARK: - UI Components
-    @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
     private let refreshControl = UIRefreshControl()
     
@@ -28,7 +25,7 @@ class ProductListCollectionViewController: UIViewController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -45,8 +42,7 @@ class ProductListCollectionViewController: UIViewController {
     private func setupUI() {
         searchBar.delegate = self
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
-        //loadingIndicator.hidesWhenStopped = true
-        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        //refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         collectionView.addSubview(refreshControl)
     }
     
@@ -74,9 +70,9 @@ class ProductListCollectionViewController: UIViewController {
         viewModel.onLoadingChanged = { [weak self] isLoading in
             DispatchQueue.main.async {
                 if isLoading {
-                    self?.loadingIndicator.startAnimating()
+                   // self?.loadingIndicator.startAnimating()
                 } else {
-                    self?.loadingIndicator.stopAnimating()
+                  //  self?.loadingIndicator.stopAnimating()
                 }
             }
         }
