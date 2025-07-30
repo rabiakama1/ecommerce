@@ -17,8 +17,10 @@ class CartViewModel {
     var onCartEmpty: (() -> Void)?
     
     // MARK: - Computed Properties
-    var items: [CartItem] = []
-
+ //   var items: [CartItem] = []
+    var items: [CartItem] {
+        return cartItems
+    }
     
     var totalPrice: Double {
         return cartItems.reduce(0) { $0 + $1.totalPrice }
@@ -50,28 +52,15 @@ class CartViewModel {
         }
     }
     
-    func removeItem(at index: Int) {
-        guard index >= 0 && index < cartItems.count else { return }
-        
-        let productId = cartItems[index].product.id
-        CoreDataManager.shared.removeProductFromCart(productId: productId)
-        cartItems.remove(at: index)
-        
-        if cartItems.isEmpty {
-            onCartEmpty?()
-        } else {
-            onCartUpdated?()
-        }
-    }
-    
     func loadCartItems() {
-        cartItems = CoreDataManager.shared.fetchCartItems()
-        if cartItems.isEmpty {
-            onCartEmpty?()
-        } else {
-            onCartUpdated?()
-        }
-    }
+          cartItems = CoreDataManager.shared.fetchCartItems()
+          onCartUpdated?()
+      }
+      
+      func removeItem(at index: Int) {
+          cartItems.remove(at: index)
+          onCartUpdated?()
+      }
     
     func getItem(at index: Int) -> CartItem? {
         guard index >= 0 && index < items.count else { return nil }

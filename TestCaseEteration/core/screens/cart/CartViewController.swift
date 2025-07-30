@@ -48,6 +48,8 @@ class CartViewController: UIViewController {
     // MARK: - Setup Methods
     private func setupUI() {
         self.title = "Basket"
+        totalPriceLabel.text = "Total:"
+        completeButton.setTitle("Complete", for: .normal)
         completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
     }
     
@@ -90,6 +92,7 @@ class CartViewController: UIViewController {
         tableView.isHidden = isCartEmpty
         totalView.isHidden = isCartEmpty
         emptyStateView.isHidden = !isCartEmpty
+        
         if !isCartEmpty {
             tableView.reloadData()
             totalLabel.text = viewModel.formattedTotalPrice

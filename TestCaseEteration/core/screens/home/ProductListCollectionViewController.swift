@@ -41,6 +41,33 @@ class ProductListCollectionViewController: UIViewController {
         setupViewModel()
         loadProducts()
         setupEmptyStateView()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(updateCartCountInNavBar),
+                                               name: .cartUpdated,
+                                               object: nil)
+        updateCartCountInNavBar()
+    }
+    
+    @objc private func updateCartCountInNavBar() {
+        let cartCount = CoreDataManager.shared.getCartItemCount()
+        
+        if cartCount > 0 {
+            let title = "Sepet (\(cartCount))"
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: title,
+                                                                style: .plain,
+                                                                target: self,
+                                                                action: #selector(goToCart))
+        } else {
+            navigationItem.rightBarButtonItem = nil
+        }
+    }
+    
+    @objc private func goToCart() {
+        self.tabBarController?.selectedIndex = 1
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .cartUpdated, object: nil)
     }
     
     private func setupEmptyStateView() {
