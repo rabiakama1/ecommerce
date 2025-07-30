@@ -84,7 +84,7 @@ class ProductCollectionViewCell: UICollectionViewCell {
         
         updateFavoriteButton(isFavorited: isFavorited)
         
-        guard let imageURL = URL(string: "https://picsum.photos/640/480") else {
+        guard let imageURL = URL(string: product.image) else {
             print("Hata: Geçersiz URL string'i - \(product.image)")
             return
         }

@@ -33,6 +33,8 @@ class CartItemTableViewCell: UITableViewCell {
         // Bu kısımlar XIB'de de ayarlanabilir.
         decreaseButton.layer.cornerRadius = 8
         increaseButton.layer.cornerRadius = 8
+        decreaseButton.setTitle("-", for: .normal)
+        increaseButton.setTitle("+", for: .normal)
     }
 
     func configure(with item: CartItem) {

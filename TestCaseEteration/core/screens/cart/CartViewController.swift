@@ -65,12 +65,6 @@ class CartViewController: UIViewController {
                 self?.updateUI()
             }
         }
-        
-        viewModel.onCartEmpty = { [weak self] in
-            DispatchQueue.main.async {
-                self?.showEmptyState()
-            }
-        }
     }
     
     // MARK: - Actions
@@ -92,11 +86,16 @@ class CartViewController: UIViewController {
     }
     
     private func updateUI() {
-        tableView.reloadData()
-        totalPriceLabel.text = "Total"
-        totalLabel.text = viewModel.formattedTotalPrice
-        completeButton.isEnabled = !viewModel.items.isEmpty
-        completeButton.alpha = viewModel.items.isEmpty ? 0.5 : 1.0
+        let isCartEmpty = viewModel.items.isEmpty
+        tableView.isHidden = isCartEmpty
+        totalView.isHidden = isCartEmpty
+        emptyStateView.isHidden = !isCartEmpty
+        if !isCartEmpty {
+            tableView.reloadData()
+            totalLabel.text = viewModel.formattedTotalPrice
+        }
+        completeButton.isEnabled = !isCartEmpty
+        completeButton.alpha = isCartEmpty ? 0.5 : 1.0
     }
     
     private func showEmptyState() {
