@@ -16,6 +16,28 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.tabBar.tintColor = .systemBlue
         self.tabBar.unselectedItemTintColor = .systemGray
         self.delegate = self
+        NotificationCenter.default.addObserver(self,
+                                                selector: #selector(updateCartBadge),
+                                                name: .cartUpdated,
+                                                object: nil)
+         updateCartBadge()
+    }
+    
+    @objc private func updateCartBadge() {
+        let cartCount = CoreDataManager.shared.getCartItemCount()
+        if let tabItems = tabBar.items, tabItems.count > 1 {
+            let cartTab = tabItems[1]
+            if cartCount > 0 {
+                cartTab.badgeValue = "\(cartCount)"
+                cartTab.badgeColor = .systemRed
+            } else {
+                cartTab.badgeValue = nil
+            }
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func setupTabs() {
@@ -76,14 +98,5 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         updateCartBadge()
     }
     
-    @objc private func updateCartBadge() {
-        let cartCount = CoreDataManager.shared.getCartItemCount()
-        if let cartTab = viewControllers?[1] {
-            cartTab.tabBarItem.badgeValue = cartCount > 0 ? "\(cartCount)" : nil
-        }
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
+
 }
