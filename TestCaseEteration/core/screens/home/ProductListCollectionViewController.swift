@@ -41,9 +41,10 @@ class ProductListCollectionViewController: UIViewController {
     }
 
     private func setupUI() {
+        self.title = "Products"
         searchBar.delegate = self
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
-        //refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         collectionView.addSubview(refreshControl)
         filterButton.setTitle("Select Filter", for: .normal)
     }
@@ -85,15 +86,13 @@ class ProductListCollectionViewController: UIViewController {
             }
         }
     }
-    
-    // MARK: - Actions
-    @objc private func filterButtonTapped() {
+    @IBAction func filterButtonTapped(_ sender: Any) {
         let filterVC = FilterViewController()
         filterVC.delegate = self
         let navController = UINavigationController(rootViewController: filterVC)
         present(navController, animated: true)
     }
-    
+
     @objc private func refreshData() {
         viewModel.refreshProducts()
     }
@@ -152,7 +151,6 @@ extension ProductListCollectionViewController: UICollectionViewDelegate {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         let height = scrollView.frame.size.height
-        
         if offsetY > contentHeight - height * 1.5 {
             viewModel.loadMoreProducts()
         }

@@ -3,6 +3,7 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -51,11 +52,13 @@
                                                     <action selector="decreaseButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="9R5-10-8Jw"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cT7-MA-WV4">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QoG-Wu-k6l">
                                                 <rect key="frame" x="51.666666666666657" y="0.0" width="51.666666666666657" height="48"/>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="filled" title="Button"/>
-                                            </button>
+                                                <color key="backgroundColor" name="AccentColor"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="knN-GE-pNI">
                                                 <rect key="frame" x="103.33333333333333" y="0.0" width="51.666666666666671" height="48"/>
                                                 <state key="normal" title="Button"/>
@@ -91,12 +94,15 @@
                 <outlet property="increaseButton" destination="knN-GE-pNI" id="LgO-H8-y11"/>
                 <outlet property="nameLabel" destination="xXM-Ov-20S" id="RmS-9e-f4S"/>
                 <outlet property="priceLabel" destination="55x-Ld-yG0" id="49l-KP-8ZZ"/>
-                <outlet property="quantityLabel" destination="cT7-MA-WV4" id="bkd-mK-dXv"/>
+                <outlet property="quantityLabel" destination="QoG-Wu-k6l" id="ElM-nk-gkJ"/>
             </connections>
             <point key="canvasLocation" x="99" y="21"/>
         </tableViewCell>
     </objects>
     <resources>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

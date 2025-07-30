@@ -77,7 +77,7 @@ class ProductCollectionViewCell: UICollectionViewCell {
         
         nameLabel.text = product.name
         priceLabel.text = product.formattedPrice
-        
+        dataLabel.text = product.model
         // Load image (placeholder for now)
         productImageView.image = UIImage(systemName: "photo")
         productImageView.tintColor = .systemGray3

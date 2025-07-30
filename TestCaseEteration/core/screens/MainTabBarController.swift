@@ -19,12 +19,23 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     private func setupTabs() {
-        let home = self.createNav(with: "Liste", and: UIImage(systemName: "house"), vc: ProductListCollectionViewController())
-       // let detail = self.createNav(with: "Detay", and: UIImage(systemName: "house"), vc: ProductDetailViewController(product: Product()))
-        let cart = self.createNav(with: "Sepet", and: UIImage(systemName: "basket"), vc: CartViewController())
-        let profile = self.createNav(with: "Profil", and: UIImage(systemName: "person"), vc: ProfileViewController())
-        let favorite = self.createNav(with: "Favori", and: UIImage(systemName: "star"), vc: FavoriteTableViewController())
-        setViewControllers([home,cart,favorite,profile], animated: true)
+        let homeVC = ProductListCollectionViewController(nibName: "ProductListCollectionViewController", bundle: nil)
+        let cartVC = CartViewController(nibName: "CartViewController", bundle: nil)
+        let favoriteVC = FavoriteTableViewController(nibName: "FavoriteTableViewController", bundle: nil)
+        let profileVC = ProfileViewController(nibName: "ProfileViewController", bundle: nil)
+        let homeNav = UINavigationController(rootViewController: homeVC)
+        let cartNav = UINavigationController(rootViewController: cartVC)
+        let favoriteNav = UINavigationController(rootViewController: favoriteVC)
+        let profileNav = UINavigationController(rootViewController: profileVC)
+        homeNav.tabBarItem = UITabBarItem(title: "Liste", image: UIImage(systemName: "house"), tag: 0)
+        cartNav.tabBarItem = UITabBarItem(title: "Sepet", image: UIImage(systemName: "basket"), tag: 1)
+        favoriteNav.tabBarItem = UITabBarItem(title: "Favori", image: UIImage(systemName: "star"), tag: 2)
+        profileNav.tabBarItem = UITabBarItem(title: "Profil", image: UIImage(systemName: "person"), tag: 3)
+        homeVC.title = "E-Market"
+        cartVC.title = "Sepetim"
+        favoriteVC.title = "Favoriler"
+        profileVC.title = "Profil"
+        setViewControllers([homeNav, cartNav, favoriteNav, profileNav], animated: true)
     }
     
     private func createNav(with title: String, and image: UIImage?, vc: UIViewController) -> UIViewController {

@@ -26,35 +26,29 @@ class CartViewModel {
     }
     
     var formattedTotalPrice: String {
-        return "\(Int(totalPrice)) ₺"
+        let total = cartItems.reduce(0) { $0 + $1.totalPrice }
+        return "\(total) ₺"
     }
     
-    var itemCount: Int {
-        return cartItems.reduce(0) { $0 + $1.quantity }
+    func increaseQuantity(for item: CartItem) {
+        let newQuantity = item.quantity + 1
+        updateQuantity(for: item.product.id, newQuantity: newQuantity)
     }
     
-    // MARK: - Public Methods
-    
-    func loadCartItems() {
-        cartItems = CoreDataManager.shared.fetchCartItems()
-        onCartUpdated?()
-        
-        if cartItems.isEmpty {
-            onCartEmpty?()
-        }
+    func decreaseQuantity(for item: CartItem) {
+        let newQuantity = item.quantity - 1
+        updateQuantity(for: item.product.id, newQuantity: newQuantity)
     }
-    
-    func updateQuantity(for productId: String, quantity: Int) {
+    func updateQuantity(for productId: String, newQuantity: Int) {
         guard let index = cartItems.firstIndex(where: { $0.product.id == productId }) else { return }
         
-        if quantity <= 0 {
+        if newQuantity <= 0 {
             removeItem(at: index)
         } else {
-            cartItems[index].quantity = quantity
-            CoreDataManager.shared.addOrUpdateProductInCart(product: cartItems[index].product, quantity: quantity)
+            cartItems[index].quantity = newQuantity
+            CoreDataManager.shared.addOrUpdateProductInCart(product: cartItems[index].product, quantity: newQuantity)
+            onCartUpdated?()
         }
-        
-        onCartUpdated?()
     }
     
     func removeItem(at index: Int) {
@@ -64,12 +58,27 @@ class CartViewModel {
         CoreDataManager.shared.removeProductFromCart(productId: productId)
         cartItems.remove(at: index)
         
-        onCartUpdated?()
-        
         if cartItems.isEmpty {
             onCartEmpty?()
+        } else {
+            onCartUpdated?()
         }
     }
+    
+    func loadCartItems() {
+        cartItems = CoreDataManager.shared.fetchCartItems()
+        if cartItems.isEmpty {
+            onCartEmpty?()
+        } else {
+            onCartUpdated?()
+        }
+    }
+    
+    func getItem(at index: Int) -> CartItem? {
+        guard index >= 0 && index < items.count else { return nil }
+        return items[index]
+    }
+    
     
     func clearCart() {
         for item in cartItems {
@@ -80,14 +89,7 @@ class CartViewModel {
         onCartEmpty?()
     }
     
-    func getItem(at index: Int) -> CartItem? {
-        guard index >= 0 && index < cartItems.count else { return nil }
-        return cartItems[index]
-    }
-    
     func completeOrder() {
-        // Here you would typically send the order to a server
-        // For now, we'll just clear the cart
         clearCart()
     }
-} 
+}

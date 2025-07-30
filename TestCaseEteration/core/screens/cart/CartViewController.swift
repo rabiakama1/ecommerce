@@ -10,20 +10,25 @@ import UIKit
 class CartViewController: UIViewController {
     
     // MARK: - UI Components
-    @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var totalView: UIView!
     @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var totalPriceLabel: UILabel!
     @IBOutlet weak var completeButton: UIButton!
-    @IBOutlet weak var emptyStateView: UIView!
-    @IBOutlet weak var emptyStateLabel: UILabel!
-    @IBOutlet weak var emptyStateImageView: UIImageView!
-    
+    @IBOutlet weak var totalView: UIView!
     // MARK: - Properties
     private let viewModel = CartViewModel()
     private let cellIdentifier = "CartItemTableViewCell"
+    
+    private lazy var emptyCartLabel: UILabel = {
+          let label = UILabel()
+          label.text = "Sepetiniz Boş"
+          label.textColor = .systemGray
+          label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+          label.textAlignment = .center
+          label.translatesAutoresizingMaskIntoConstraints = false
+          label.isHidden = true
+          return label
+      }()
     
     // MARK: - Initialization
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -42,6 +47,7 @@ class CartViewController: UIViewController {
         setupTableView()
         setupViewModel()
         loadCartItems()
+        setupEmptyCartLabel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,16 +57,17 @@ class CartViewController: UIViewController {
     
     // MARK: - Setup Methods
     private func setupUI() {
+        self.title = "Basket"
         completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
     }
-    
-
     
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(CartItemTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        let nib = UINib(nibName: "CartItemTableViewCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: cellIdentifier)
     }
+    
     
     private func setupViewModel() {
         viewModel.onCartUpdated = { [weak self] in
@@ -96,7 +103,8 @@ class CartViewController: UIViewController {
     
     private func updateUI() {
         tableView.reloadData()
-        totalPriceLabel.text = viewModel.formattedTotalPrice
+        totalPriceLabel.text = "Total"
+        totalLabel.text = viewModel.formattedTotalPrice
         completeButton.isEnabled = !viewModel.items.isEmpty
         completeButton.alpha = viewModel.items.isEmpty ? 0.5 : 1.0
     }
@@ -104,13 +112,21 @@ class CartViewController: UIViewController {
     private func showEmptyState() {
         tableView.isHidden = true
         totalView.isHidden = true
-        emptyStateView.isHidden = false
+        emptyCartLabel.isHidden = false
     }
     
     private func hideEmptyState() {
         tableView.isHidden = false
         totalView.isHidden = false
-        emptyStateView.isHidden = true
+        emptyCartLabel.isHidden = true
+    }
+    
+    private func setupEmptyCartLabel() {
+        view.addSubview(emptyCartLabel)
+        NSLayoutConstraint.activate([
+            emptyCartLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyCartLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
     
     private func showAlert(title: String, message: String) {
@@ -120,8 +136,24 @@ class CartViewController: UIViewController {
     }
 }
 
-// MARK: - UITableViewDataSource
-extension CartViewController: UITableViewDataSource {
+// MARK: - CartItemCellDelegate
+extension CartViewController: CartItemCellDelegate {
+    func didTapIncrease(on cell: CartItemTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell),
+              let item = viewModel.getItem(at: indexPath.row) else { return }
+        
+        viewModel.increaseQuantity(for: item)
+    }
+    
+    func didTapDecrease(on cell: CartItemTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell),
+              let item = viewModel.getItem(at: indexPath.row) else { return }
+        
+        viewModel.decreaseQuantity(for: item)
+    }
+}
+
+extension CartViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.items.count
     }
@@ -133,31 +165,12 @@ extension CartViewController: UITableViewDataSource {
             cell.configure(with: item)
             cell.delegate = self
         }
-        
         return cell
-    }
-}
-
-// MARK: - UITableViewDelegate
-extension CartViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             viewModel.removeItem(at: indexPath.row)
         }
-    }
-}
-
-// MARK: - CartItemCellDelegate
-extension CartViewController: CartItemCellDelegate {
-    func didTapIncrease(on cell: CartItemTableViewCell) {
-        
-    }
-    
-    func didTapDecrease(on cell: CartItemTableViewCell) {
-        
     }
 }
