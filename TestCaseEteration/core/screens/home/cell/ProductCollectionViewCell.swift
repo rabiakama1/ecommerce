@@ -1,18 +1,18 @@
 //
-//  ProductTableViewCell.swift
-//  EterationCase
+//  ProductCollectionViewCell.swift
+//  TestCaseEteration
 //
-//  Created by rabiakama on 28.07.2025.
+//  Created by aşkımcım on 30.07.2025.
 //
 
 import UIKit
 
-/*protocol ProductCellDelegate: AnyObject {
-    func didTapFavorite(_ product: Product,cell: ProductTableViewCell)
+protocol ProductCellDelegate: AnyObject {
+    func didTapFavorite(_ product: Product,cell: ProductCollectionViewCell)
     func didTapAddToCart(_ product: Product)
 }
 
-class ProductTableViewCell: UICollectionViewCell {
+class ProductCollectionViewCell: UICollectionViewCell {
     
     // MARK: - UI Components
     @IBOutlet weak var productImageView: UIImageView!
@@ -127,4 +127,3 @@ class ProductTableViewCell: UICollectionViewCell {
         product = nil
     }
 }
-*/

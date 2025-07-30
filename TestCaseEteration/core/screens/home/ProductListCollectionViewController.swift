@@ -20,7 +20,7 @@ class ProductListCollectionViewController: UIViewController {
     
     // MARK: - Properties
     private let viewModel = ProductListViewModel()
-    private let cellIdentifier = "ProductTableViewCell"
+    private let cellIdentifier = "ProductCollectionViewCell"
     
     // MARK: - Initialization
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -51,7 +51,7 @@ class ProductListCollectionViewController: UIViewController {
     private func setupCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(UINib(nibName: "ProductTableViewCell", bundle: nil), forCellWithReuseIdentifier: cellIdentifier)
+        collectionView.register(UINib(nibName: "ProductCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: cellIdentifier)
     }
     
     private func setupViewModel() {
@@ -117,7 +117,7 @@ extension ProductListCollectionViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! ProductTableViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! ProductCollectionViewCell
         cell.delegate = self
         if let product = viewModel.getProduct(at: indexPath.item) {
             cell.configure(with: product, isFavorited: viewModel.isProductFavorited(product))
@@ -178,17 +178,12 @@ extension ProductListCollectionViewController: UISearchBarDelegate {
 
 // MARK: - ProductCellDelegate
 extension ProductListCollectionViewController: ProductCellDelegate {
-    func didTapFavorite(_ cell: ProductTableViewCell) {
-        guard let indexPath = collectionView.indexPath(for: cell),
-              let product = viewModel.getProduct(at: indexPath.item) else { return }
+    func didTapFavorite(_ product: Product,cell: ProductCollectionViewCell) {
         viewModel.toggleFavorite(for: product)
         cell.updateFavoriteButton(isFavorited: viewModel.isProductFavorited(product))
     }
     
-    func didTapAddToCart(_ cell: ProductTableViewCell) {
-        guard let indexPath = collectionView.indexPath(for: cell),
-              let product = viewModel.getProduct(at: indexPath.item) else { return }
-        
+    func didTapAddToCart(_ product: Product) {
         viewModel.addToCart(product: product)
         showAlert(title: "Success", message: "\(product.name) added to cart!")
     }

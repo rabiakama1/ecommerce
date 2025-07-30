@@ -85,8 +85,7 @@ class ProductDetailViewController: UIViewController {
         addProductToCartButton.backgroundColor = .systemBlue
         addProductToCartButton.layer.cornerRadius = 12
         addProductToCartButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        addProductToCartButton.addTarget(self, action: #selector(addToCartButtonTapped), for: .touchUpInside)
-    }
+        addProductToCartButton.addTarget(self, action: #selector(addToCartButtonTapped), for: .touchUpInside)    }
     
 
     
