@@ -1,4 +1,4 @@
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 16 Pro - 2025-07-31 at 01 12 35" src="https://github.com/user-attachments/assets/6152508f-524f-4a82-87d9-c40b6c4facc1" />| ![Ana Sayfa]([<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 16 Pro - 2025-07-31 at 01 12 19" src="https://github.com/user-attachments/assets/537acd6c-97c7-411c-a89e-cc6f92864733" />
+ ![Ana Sayfa]([<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 16 Pro - 2025-07-31 at 01 12 19" src="https://github.com/user-attachments/assets/537acd6c-97c7-411c-a89e-cc6f92864733" />
 ]) | ![Sepet Ekranı]([<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 16 Pro - 2025-07-31 at 01 12 26" src="https://github.com/user-attachments/assets/6b0fc91f-0806-42e1-a439-c2b02e11a8ba" />
 ]()
 ]) | ![Ürün Detayı]([<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 16 Pro - 2025-07-31 at 01 12 35" src="https://github.com/user-attachments/assets/b23e6628-567f-4be6-83e5-579fd300b41f" />
