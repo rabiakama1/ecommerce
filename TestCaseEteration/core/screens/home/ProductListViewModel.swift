@@ -10,7 +10,7 @@ import Foundation
 class ProductListViewModel {
     
     // MARK: - Properties
-    private var allProducts: [Product] = []
+    var allProducts: [Product] = []
     private var filteredProducts: [Product] = []
     private var currentPage = 1
     private var isLoading = false

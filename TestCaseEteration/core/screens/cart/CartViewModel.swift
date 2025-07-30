@@ -17,9 +17,8 @@ class CartViewModel {
     var onCartEmpty: (() -> Void)?
     
     // MARK: - Computed Properties
-    var items: [CartItem] {
-        return cartItems
-    }
+    var items: [CartItem] = []
+
     
     var totalPrice: Double {
         return cartItems.reduce(0) { $0 + $1.totalPrice }
