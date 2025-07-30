@@ -34,6 +34,9 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="star" catalog="system"/>
+                                <connections>
+                                    <action selector="favoriteButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="dLq-gB-x7T"/>
+                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="aYx-MB-WXg">
                                 <rect key="frame" x="8" y="140" width="126" height="88"/>
@@ -56,10 +59,13 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fLM-p0-y8V">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pJg-HU-fa2">
                                         <rect key="frame" x="0.0" y="67.666666666666657" width="126" height="20.333333333333329"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled"/>
+                                        <connections>
+                                            <action selector="addToCartButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="aCA-Uq-4Qn"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -90,7 +96,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="addToCartButton" destination="fLM-p0-y8V" id="9kA-H9-sXr"/>
+                <outlet property="addToCartButton" destination="pJg-HU-fa2" id="0S1-yh-IEY"/>
                 <outlet property="dataLabel" destination="Kmo-sO-Otv" id="Th2-Md-a2S"/>
                 <outlet property="favoriteButton" destination="cep-15-QRT" id="Kxk-0O-Fuy"/>
                 <outlet property="nameLabel" destination="ver-6C-12F" id="tdK-yE-38P"/>

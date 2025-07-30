@@ -15,6 +15,7 @@ class ProductListCollectionViewController: UIViewController {
     @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     private let refreshControl = UIRefreshControl()
     
     // MARK: - Properties
@@ -44,6 +45,7 @@ class ProductListCollectionViewController: UIViewController {
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
         //refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         collectionView.addSubview(refreshControl)
+        filterButton.setTitle("Select Filter", for: .normal)
     }
     
     private func setupCollectionView() {
@@ -70,9 +72,9 @@ class ProductListCollectionViewController: UIViewController {
         viewModel.onLoadingChanged = { [weak self] isLoading in
             DispatchQueue.main.async {
                 if isLoading {
-                   // self?.loadingIndicator.startAnimating()
+                    self?.loadingIndicator.startAnimating()
                 } else {
-                  //  self?.loadingIndicator.stopAnimating()
+                    self?.loadingIndicator.stopAnimating()
                 }
             }
         }
@@ -116,7 +118,7 @@ extension ProductListCollectionViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! ProductTableViewCell
-        
+        cell.delegate = self
         if let product = viewModel.getProduct(at: indexPath.item) {
             cell.configure(with: product, isFavorited: viewModel.isProductFavorited(product))
             cell.delegate = self
@@ -179,7 +181,6 @@ extension ProductListCollectionViewController: ProductCellDelegate {
     func didTapFavorite(_ cell: ProductTableViewCell) {
         guard let indexPath = collectionView.indexPath(for: cell),
               let product = viewModel.getProduct(at: indexPath.item) else { return }
-        
         viewModel.toggleFavorite(for: product)
         cell.updateFavoriteButton(isFavorited: viewModel.isProductFavorited(product))
     }

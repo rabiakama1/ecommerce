@@ -82,6 +82,18 @@ class ProductTableViewCell: UICollectionViewCell {
         productImageView.tintColor = .systemGray3
         
         updateFavoriteButton(isFavorited: isFavorited)
+        
+        DispatchQueue.global().async { [weak self] in
+               if let data = try? Data(contentsOf: imageURL) {
+                   if let image = UIImage(data: data) {
+                       DispatchQueue.main.async {
+                           if self?.currentImageURL == imageURL {
+                               self?.productImageView.image = image
+                           }
+                       }
+                   }
+               }
+           }
     }
     
     func updateFavoriteButton(isFavorited: Bool) {
@@ -91,11 +103,11 @@ class ProductTableViewCell: UICollectionViewCell {
     }
     
     // MARK: - Actions
-    @objc private func favoriteButtonTapped() {
+    @IBAction func favoriteButtonTapped(_ sender: Any) {
         delegate?.didTapFavorite(self)
     }
     
-    @objc private func addToCartButtonTapped() {
+    @IBAction func addToCartButtonTapped(_ sender: Any) {
         delegate?.didTapAddToCart(self)
     }
     
