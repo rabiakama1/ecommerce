@@ -151,4 +151,9 @@ class ProductListViewModel {
         // 5. View Controller'a listeyi yenilemesi için haber ver
         self.onSearchResultsUpdated?()
     }
+    
+    func clearFilter() {
+         filteredProducts.removeAll()
+         onSearchResultsUpdated?()
+     }
 }

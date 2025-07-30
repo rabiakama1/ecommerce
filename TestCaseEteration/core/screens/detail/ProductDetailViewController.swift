@@ -87,18 +87,47 @@ class ProductDetailViewController: UIViewController {
         addProductToCartButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         addProductToCartButton.addTarget(self, action: #selector(addToCartButtonTapped), for: .touchUpInside)    }
     
-
+    
     
     private func configureWithProduct() {
         nameLabel.text = product.name
         descriptionLabel.text = product.description
         priceLabel.text = "Price: \(product.formattedPrice)"
-        
-        // Load image (placeholder for now)
-        productImageView.image = UIImage(systemName: "photo")
-        productImageView.tintColor = .systemGray3
+        loadImage()
         
         updateFavoriteButton()
+    }
+    
+    private func loadImage() {
+        guard let imageURL = URL(string: product.image) else {
+            print("Geçersiz resim URL'i: \(product.image)")
+            self.productImageView.image = UIImage(systemName: "photo")
+            self.productImageView.tintColor = .systemGray3
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: imageURL) { [weak self] data, response, error in
+            
+            if let error = error {
+                print("Resim indirme hatası: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200...299).contains(httpResponse.statusCode) else {
+                print("Geçersiz sunucu cevabı.")
+                return
+            }
+            
+            if let data = data, let image = UIImage(data: data) {
+                
+                DispatchQueue.main.async {
+                    self?.productImageView.image = image
+                }
+            }
+        }
+        
+        task.resume()
     }
     
     private func updateFavoriteButton() {

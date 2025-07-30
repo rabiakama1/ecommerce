@@ -19,7 +19,7 @@ class ProductListCollectionViewController: UIViewController {
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     private let refreshControl = UIRefreshControl()
     private let emptyStateView = EmptyStateView()
-
+    private var currentFilter = ProductFilter()
     // MARK: - Properties
     private let viewModel = ProductListViewModel()
     private let cellIdentifier = "ProductCollectionViewCell"
@@ -44,15 +44,15 @@ class ProductListCollectionViewController: UIViewController {
     }
     
     private func setupEmptyStateView() {
-          view.addSubview(emptyStateView)
-          emptyStateView.translatesAutoresizingMaskIntoConstraints = false
-          emptyStateView.configure(with: "Listelenecek ürün bulunamadı.", icon: UIImage(systemName: "house"))
-          NSLayoutConstraint.activate([
-              emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-              emptyStateView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-              emptyStateView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-              emptyStateView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-          ])
+        view.addSubview(emptyStateView)
+        emptyStateView.translatesAutoresizingMaskIntoConstraints = false
+        emptyStateView.configure(with: "Listelenecek ürün bulunamadı.", icon: UIImage(systemName: "house"))
+        NSLayoutConstraint.activate([
+            emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyStateView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyStateView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            emptyStateView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
     }
     
     private func setupUI() {
@@ -122,6 +122,7 @@ class ProductListCollectionViewController: UIViewController {
     @IBAction func filterButtonTapped(_ sender: Any) {
         let filterVC = FilterViewController()
         filterVC.delegate = self
+        filterVC.currentFilter = self.currentFilter
         let navController = UINavigationController(rootViewController: filterVC)
         present(navController, animated: true)
     }
@@ -223,7 +224,12 @@ extension ProductListCollectionViewController: ProductCellDelegate {
 // MARK: - FilterViewControllerDelegate
 extension ProductListCollectionViewController: FilterViewControllerDelegate {
     func didApplyFilter(_ filter: ProductFilter) {
-        // Filter implementation will be added later
+        self.currentFilter = filter // Filtre uygulandığında sakla
         viewModel.applyFilter(filter)
+    }
+    
+    func didResetFilters() {
+        self.currentFilter = ProductFilter() // Filtre sıfırlandığında temizle
+        viewModel.clearFilter()
     }
 }

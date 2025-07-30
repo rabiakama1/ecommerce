@@ -1,5 +1,5 @@
 //
-//  FavoriteTableViewCell.swift
+//  CartItemTableViewCell.swift
 //  EterationCase
 //
 //  Created by rabiakama on 28.07.2025.

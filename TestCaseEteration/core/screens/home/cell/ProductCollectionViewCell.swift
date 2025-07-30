@@ -84,21 +84,32 @@ class ProductCollectionViewCell: UICollectionViewCell {
         
         updateFavoriteButton(isFavorited: isFavorited)
         
-        guard let imageURL = URL(string: product.image) else {
+        guard let imageURL = URL(string: "https://picsum.photos/640/480") else {
             print("Hata: Geçersiz URL string'i - \(product.image)")
             return
         }
-        DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: imageURL) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async { [weak self] in
-                        if self?.currentImageURL == imageURL {
-                            self?.productImageView.image = image
-                        }
-                    }
+        let task = URLSession.shared.dataTask(with: imageURL) { [weak self] data, response, error in
+            if let error = error {
+                print("Data task error: \(error.localizedDescription)")
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200...299).contains(httpResponse.statusCode) else {
+                print("Error: Geçersiz sunucu cevabı veya HTTP hata kodu. Status: \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                return
+            }
+            
+            guard let data = data, let image = UIImage(data: data) else {
+                print("Error: Sunucudan veri alınamadı veya veri resme dönüştürülemedi.")
+                return
+            }
+            DispatchQueue.main.async {
+                if self?.currentImageURL == imageURL {
+                    self?.productImageView.image = image
                 }
             }
         }
+        task.resume()
     }
     
     func updateFavoriteButton(isFavorited: Bool) {
