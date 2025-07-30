@@ -23,7 +23,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="Neo-PG-ypM">
-                    <rect key="frame" x="0.0" y="88" width="414" height="44"/>
+                    <rect key="frame" x="8" y="88" width="398" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="Xxl-DO-KkV"/>
                     </constraints>
@@ -33,16 +33,16 @@
                     </connections>
                 </searchBar>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="acf-Nc-RCe">
-                    <rect key="frame" x="0.0" y="140" width="414" height="34.333333333333343"/>
+                    <rect key="frame" x="8" y="140" width="398" height="34.333333333333343"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LjG-Ak-GwO">
-                            <rect key="frame" x="0.0" y="0.0" width="206" height="34.333333333333336"/>
+                            <rect key="frame" x="0.0" y="0.0" width="198" height="34.333333333333336"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6I2-5E-bbR">
-                            <rect key="frame" x="208" y="0.0" width="206" height="34.333333333333336"/>
+                            <rect key="frame" x="200" y="0.0" width="198" height="34.333333333333336"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="gray" title="Button"/>
                             <connections>
@@ -72,13 +72,13 @@
                 <constraint firstItem="7ER-Qz-IBL" firstAttribute="top" secondItem="acf-Nc-RCe" secondAttribute="bottom" constant="8" id="Cdy-Yk-2Y1"/>
                 <constraint firstItem="7ER-Qz-IBL" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="NgK-8U-PTI"/>
                 <constraint firstItem="acf-Nc-RCe" firstAttribute="top" secondItem="Neo-PG-ypM" secondAttribute="bottom" constant="8" id="UHk-az-XTu"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="acf-Nc-RCe" secondAttribute="trailing" id="VlT-eu-YO7"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="acf-Nc-RCe" secondAttribute="trailing" constant="8" id="VlT-eu-YO7"/>
                 <constraint firstItem="Neo-PG-ypM" firstAttribute="leading" secondItem="acf-Nc-RCe" secondAttribute="leading" id="fBp-M4-lc0"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="7ER-Qz-IBL" secondAttribute="trailing" id="fbv-nR-9Ui"/>
                 <constraint firstItem="Neo-PG-ypM" firstAttribute="trailing" secondItem="acf-Nc-RCe" secondAttribute="trailing" id="hgq-pJ-Gia"/>
                 <constraint firstItem="Neo-PG-ypM" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="hgx-5p-gd9"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="7ER-Qz-IBL" secondAttribute="bottom" id="jvu-CR-Bgz"/>
-                <constraint firstItem="acf-Nc-RCe" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="wNx-eu-dEz"/>
+                <constraint firstItem="acf-Nc-RCe" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="wNx-eu-dEz"/>
             </constraints>
             <point key="canvasLocation" x="139.13043478260872" y="19.419642857142858"/>
         </view>

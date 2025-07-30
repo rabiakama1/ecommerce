@@ -2,7 +2,7 @@
 //  TestCaseEterationTests.swift
 //  TestCaseEterationTests
 //
-//  Created by aşkımcım on 30.07.2025.
+//  Created by rabiakama on 30.07.2025.
 //
 
 import Testing

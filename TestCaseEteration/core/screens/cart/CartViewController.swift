@@ -19,17 +19,7 @@ class CartViewController: UIViewController {
     private let viewModel = CartViewModel()
     private let cellIdentifier = "CartItemTableViewCell"
     
-    private lazy var emptyCartLabel: UILabel = {
-          let label = UILabel()
-          label.text = "Sepetiniz Boş"
-          label.textColor = .systemGray
-          label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-          label.textAlignment = .center
-          label.translatesAutoresizingMaskIntoConstraints = false
-          label.isHidden = true
-          return label
-      }()
-    
+    private let emptyStateView = EmptyStateView()
     // MARK: - Initialization
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -47,7 +37,7 @@ class CartViewController: UIViewController {
         setupTableView()
         setupViewModel()
         loadCartItems()
-        setupEmptyCartLabel()
+        setupEmptyStateView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -112,22 +102,27 @@ class CartViewController: UIViewController {
     private func showEmptyState() {
         tableView.isHidden = true
         totalView.isHidden = true
-        emptyCartLabel.isHidden = false
+        emptyStateView.isHidden = false
     }
     
     private func hideEmptyState() {
         tableView.isHidden = false
         totalView.isHidden = false
-        emptyCartLabel.isHidden = true
+        emptyStateView.isHidden = true
     }
     
-    private func setupEmptyCartLabel() {
-        view.addSubview(emptyCartLabel)
-        NSLayoutConstraint.activate([
-            emptyCartLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emptyCartLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
+    private func setupEmptyStateView() {
+          view.addSubview(emptyStateView)
+          emptyStateView.translatesAutoresizingMaskIntoConstraints = false
+          emptyStateView.configure(with: "Sepetiniz boş.", icon: UIImage(systemName: "basket.fill"))
+          NSLayoutConstraint.activate([
+              emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+              emptyStateView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+              emptyStateView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+              emptyStateView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+          ])
     }
+
     
     private func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)

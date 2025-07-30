@@ -12,7 +12,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         //setupTabs()
-        setupViewControllers()
+        setupTabs()
         self.tabBar.tintColor = .systemBlue
         self.tabBar.unselectedItemTintColor = .systemGray
         self.delegate = self
@@ -45,16 +45,9 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-
-        if self.selectedIndex == 1 {
-            let alert = UIAlertController(title: "Hello", message: nil,
-                                          preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Dismiss", style: .default,
-                                          handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
+    /*func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        self.present(alert, animated: true, completion: nil)
+    }*/
     
     private func setupTabBar() {
         tabBar.tintColor = UIColor.systemBlue

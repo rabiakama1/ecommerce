@@ -14,10 +14,12 @@ class ProductListCollectionViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
-    
+    private var allProducts: [Product] = []
+    private var filteredProducts: [Product] = []
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     private let refreshControl = UIRefreshControl()
-    
+    private let emptyStateView = EmptyStateView()
+
     // MARK: - Properties
     private let viewModel = ProductListViewModel()
     private let cellIdentifier = "ProductCollectionViewCell"
@@ -26,7 +28,7 @@ class ProductListCollectionViewController: UIViewController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -38,11 +40,25 @@ class ProductListCollectionViewController: UIViewController {
         setupCollectionView()
         setupViewModel()
         loadProducts()
+        setupEmptyStateView()
     }
-
+    
+    private func setupEmptyStateView() {
+          view.addSubview(emptyStateView)
+          emptyStateView.translatesAutoresizingMaskIntoConstraints = false
+          emptyStateView.configure(with: "Listelenecek ürün bulunamadı.", icon: UIImage(systemName: "house"))
+          NSLayoutConstraint.activate([
+              emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+              emptyStateView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+              emptyStateView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+              emptyStateView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+          ])
+    }
+    
     private func setupUI() {
         self.title = "Products"
         searchBar.delegate = self
+        loadingIndicator.hidesWhenStopped = true
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         collectionView.addSubview(refreshControl)
@@ -60,13 +76,15 @@ class ProductListCollectionViewController: UIViewController {
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
                 self?.refreshControl.endRefreshing()
+                self?.loadNextPageIfNeeded()
+                self?.updateEmptyStateVisibility()
             }
         }
-        
         viewModel.onProductsFailed = { [weak self] error in
             DispatchQueue.main.async {
                 self?.showAlert(title: "Error", message: error)
                 self?.refreshControl.endRefreshing()
+                self?.updateEmptyStateVisibility()
             }
         }
         
@@ -83,16 +101,31 @@ class ProductListCollectionViewController: UIViewController {
         viewModel.onSearchResultsUpdated = { [weak self] in
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
+                self?.updateEmptyStateVisibility()
             }
         }
     }
+    
+    
+    private func updateEmptyStateVisibility() {
+        let hasNoProducts = viewModel.products.isEmpty
+        emptyStateView.isHidden = !hasNoProducts
+        collectionView.isHidden = hasNoProducts
+    }
+    
+    private func loadNextPageIfNeeded() {
+        if collectionView.contentSize.height < collectionView.frame.size.height {
+            viewModel.loadMoreProducts()
+        }
+    }
+    
     @IBAction func filterButtonTapped(_ sender: Any) {
         let filterVC = FilterViewController()
         filterVC.delegate = self
         let navController = UINavigationController(rootViewController: filterVC)
         present(navController, animated: true)
     }
-
+    
     @objc private func refreshData() {
         viewModel.refreshProducts()
     }
@@ -191,6 +224,6 @@ extension ProductListCollectionViewController: ProductCellDelegate {
 extension ProductListCollectionViewController: FilterViewControllerDelegate {
     func didApplyFilter(_ filter: ProductFilter) {
         // Filter implementation will be added later
-        print("Filter applied: \(filter)")
+        viewModel.applyFilter(filter)
     }
 }

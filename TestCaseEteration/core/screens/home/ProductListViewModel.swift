@@ -119,4 +119,36 @@ class ProductListViewModel {
     func addToCart(product: Product) {
         CoreDataManager.shared.addOrUpdateProductInCart(product: product, quantity: 1)
     }
-} 
+    
+    func applyFilter(_ filter: ProductFilter) {
+        var newFilteredList = allProducts
+
+        // 1. Minimum Fiyata Göre Filtrele
+        if let minPrice = filter.minPrice, minPrice > 0 {
+            newFilteredList = newFilteredList.filter { $0.priceValue >= minPrice }
+        }
+        
+        // 2. Maksimum Fiyata Göre Filtrele
+        if let maxPrice = filter.maxPrice, maxPrice > 0 {
+            newFilteredList = newFilteredList.filter { $0.priceValue <= maxPrice }
+        }
+        
+        // 3. Sonuçları Sırala
+        switch filter.sortBy {
+        case .name:
+            newFilteredList.sort { $0.name < $1.name }
+        case .priceLowToHigh:
+            newFilteredList.sort { $0.priceValue < $1.priceValue }
+        case .priceHighToLow:
+            newFilteredList.sort { $0.priceValue > $1.priceValue }
+        case .brand:
+            newFilteredList.sort { $0.brand < $1.brand }
+        }
+        
+        // 4. ViewModel'in filtrelenmiş listesini güncelle
+        self.filteredProducts = newFilteredList
+        
+        // 5. View Controller'a listeyi yenilemesi için haber ver
+        self.onSearchResultsUpdated?()
+    }
+}
